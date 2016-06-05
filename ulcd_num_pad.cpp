@@ -45,7 +45,7 @@ ulcd_num_pad::ulcd_num_pad(uLCD_4DLibrary* p_lcd, uint16_t foreground_color, uin
     y_size = (rect.size.height-2) / 5.;
 
     m_len = 0;
-    strcpy(m_text, "");
+    m_text = "";
 
     draw_num_pad();
 }
@@ -71,7 +71,7 @@ ulcd_num_pad::ulcd_num_pad(uLCD_4DLibrary* p_lcd):
     y_size = (rect.size.height-2) / 5.;
 
     m_len = 0;
-    strcpy(m_text, "");
+    m_text = "";
 }
 
 ulcd_num_pad::~ulcd_num_pad()
@@ -130,55 +130,26 @@ void ulcd_num_pad::did_select_button(ulcd_button* button)
     if(m_len < MAX_LEN)
     {
         m_len ++;
-
-        if(button == &button_0)
-            strcat(m_text, "0");
-        else if(button == &button_1)
-            strcat(m_text, "1");
-        else if(button == &button_2)
-            strcat(m_text, "2");
-        else if(button == &button_3)
-            strcat(m_text, "3");
-        else if(button == &button_4)
-            strcat(m_text, "4");
-        else if(button == &button_5)
-            strcat(m_text, "5");
-        else if(button == &button_6)
-            strcat(m_text, "6");
-        else if(button == &button_7)
-            strcat(m_text, "7");
-        else if(button == &button_8)
-            strcat(m_text, "8");
-        else if(button == &button_9)
-            strcat(m_text, "9");
-        else if(button == &button_point)
-            strcat(m_text, ".");
-        else if(button == &button_cancel)
+       if(button == &button_cancel)
         {
-            char text[MAX_LEN];
             m_len -= 2;
             if(m_len < 0)
                 m_len = 0;
-            memcpy(text, m_text, m_len);
-            strcpy(m_text, text);
-
+            m_text.substr(0, m_len);
         }
         else if(button == &button_enter)
-        {
             m_len -= 1;
-        }
+        else
+            m_text += button->get_label();
     }
     else
     {
         if(button == &button_cancel)
         {
-            char text[MAX_LEN];
             m_len -= 1;
             if(m_len < 0)
                 m_len = 0;
-            memcpy(text, m_text, m_len);
-            strcpy(m_text, text);
-
+            m_text.substr(0, m_len);
         }
     }
 
@@ -193,25 +164,31 @@ void ulcd_num_pad::did_select_button(ulcd_button* button)
  *
  */
 
-int16_t ulcd_num_pad::get_text(char* p_text)
+int16_t ulcd_num_pad::get_text(const string &p_text)
 {
-    strcpy(p_text, m_text);
+    m_text = p_text;
+    m_len = m_text.length();
     return m_len;
 }
 
 uint16_t ulcd_num_pad::get_value()
 {
-    return atof(m_text);
+    std::istringstream is(m_text);
+    uint16_t ret;
+    is >> ret;
+    return ret;
 }
 
 void ulcd_num_pad::set_initial_value(uint16_t value)
 {
-    sprintf(m_text, "%f", value);
+    std::ostringstream os;
+    os << value;
+    m_text = os.str();
 }
 
 void ulcd_num_pad::clear_text()
 {
-    strcpy(m_text, "");
+    m_text = "";
     m_len = 0;
 }
 

@@ -10,6 +10,7 @@
 
 #include "ulcd_component.h"
 #include <string>
+#include <sstream>
 #include "uLCD_4DLibrary.h"
 #include "ulcd_button.h"
 
@@ -72,10 +73,10 @@ private :
 
 
 public :
-    char m_text[MAX_LEN];
+    string m_text;
     uint16_t m_foreground_color, m_background_color;
 
-    int16_t get_text(char* p_text);
+    int16_t get_text(const string &p_text);
     uint16_t get_value();
     void set_initial_value(uint16_t value);
     void clear_text();
