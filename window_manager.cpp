@@ -96,4 +96,3 @@ void window_manager::run()
 {
     touch_dispatcher::shared_instance()->touch_periodic_task();
 }
-
