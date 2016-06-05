@@ -75,35 +75,28 @@ void ulcd_progress_bar::draw_progress_bar()
         {
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, (uint16_t)(rect.origin.y+ (rect.size.height* (1. - m_per_cent))), m_background_color);
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, (uint16_t)(rect.origin.y+ (rect.size.height* (1. - m_per_cent))), rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
-            m_lcd->gfx_draw_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
         }
         break;
         case v_to_bottom:
         {
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, (uint16_t)(rect.origin.y+ (rect.size.height* m_per_cent)), m_foreground_color);
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, (uint16_t)(rect.origin.y+ (rect.size.height* m_per_cent)), rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_background_color);
-            m_lcd->gfx_draw_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
         }
         break;
         case h_to_right:
         {
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + (uint16_t)(rect.size.width * m_per_cent), (rect.origin.y+ rect.size.height), m_foreground_color);
             m_lcd->gfx_draw_filled_rectangle((uint16_t)(rect.origin.x + (rect.size.width* m_per_cent)), rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_background_color);
-            m_lcd->gfx_draw_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
         }
         break;
         case h_to_left:
         {
             m_lcd->gfx_draw_filled_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + (uint16_t)(rect.size.width * (1. - m_per_cent)), (rect.origin.y+ rect.size.height), m_background_color);
             m_lcd->gfx_draw_filled_rectangle((uint16_t)(rect.origin.x + (rect.size.width* (1. - m_per_cent))), rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
-            m_lcd->gfx_draw_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
         }
         break;
     }
-    /*m_lcd->gfx_draw_filled_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, (uint16_t)(rect.origin.y+ (rect.size.height* (1. - m_per_cent))), m_background_color);
-    m_lcd->gfx_draw_filled_rectangle(rect.origin.x, (uint16_t)(rect.origin.y+ (rect.size.height* (1. - m_per_cent))), rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
     m_lcd->gfx_draw_rectangle(rect.origin.x, rect.origin.y, rect.origin.x + rect.size.width, rect.origin.y + rect.size.height , m_foreground_color);
-    */
 }
 
 /*

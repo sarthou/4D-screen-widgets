@@ -32,19 +32,7 @@ ulcd_num_pad::ulcd_num_pad(uLCD_4DLibrary* p_lcd, uint16_t foreground_color, uin
     m_lcd = p_lcd;
     m_delegate = NULL;
 
-    button_0.set_delegate(this);
-    button_1.set_delegate(this);
-    button_2.set_delegate(this);
-    button_3.set_delegate(this);
-    button_4.set_delegate(this);
-    button_5.set_delegate(this);
-    button_6.set_delegate(this);
-    button_7.set_delegate(this);
-    button_8.set_delegate(this);
-    button_9.set_delegate(this);
-    button_point.set_delegate(this);
-    button_cancel.set_delegate(this);
-    button_enter.set_delegate(this);
+    set_button_delegate();
 
     rect.origin.x = x_origin;
     rect.origin.y = y_origin;
@@ -70,19 +58,7 @@ ulcd_num_pad::ulcd_num_pad(uLCD_4DLibrary* p_lcd):
     m_lcd = p_lcd;
     m_delegate  = NULL;
 
-    button_0.set_delegate(this);
-    button_1.set_delegate(this);
-    button_2.set_delegate(this);
-    button_3.set_delegate(this);
-    button_4.set_delegate(this);
-    button_5.set_delegate(this);
-    button_6.set_delegate(this);
-    button_7.set_delegate(this);
-    button_8.set_delegate(this);
-    button_9.set_delegate(this);
-    button_point.set_delegate(this);
-    button_cancel.set_delegate(this);
-    button_enter.set_delegate(this);
+    set_button_delegate();
 
     rect.origin.x = 0;
     rect.origin.y = 0;
@@ -108,6 +84,23 @@ ulcd_num_pad::~ulcd_num_pad()
  * private functions
  *
  */
+
+void ulcd_num_pad::set_button_delegate()
+{
+    button_0.set_delegate(this);
+    button_1.set_delegate(this);
+    button_2.set_delegate(this);
+    button_3.set_delegate(this);
+    button_4.set_delegate(this);
+    button_5.set_delegate(this);
+    button_6.set_delegate(this);
+    button_7.set_delegate(this);
+    button_8.set_delegate(this);
+    button_9.set_delegate(this);
+    button_point.set_delegate(this);
+    button_cancel.set_delegate(this);
+    button_enter.set_delegate(this);
+}
 
 void ulcd_num_pad::draw_num_pad()
 {
@@ -204,6 +197,16 @@ int16_t ulcd_num_pad::get_text(char* p_text)
 {
     strcpy(p_text, m_text);
     return m_len;
+}
+
+uint16_t ulcd_num_pad::get_value()
+{
+    return atof(m_text);
+}
+
+void ulcd_num_pad::set_initial_value(uint16_t value)
+{
+    sprintf(m_text, "%f", value);
 }
 
 void ulcd_num_pad::clear_text()

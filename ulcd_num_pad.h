@@ -65,6 +65,8 @@ private :
 
     void did_select_button(ulcd_button* button);
 
+    void set_button_delegate();
+
     uint16_t x_size, y_size;
     int16_t m_len;
 
@@ -74,6 +76,8 @@ public :
     uint16_t m_foreground_color, m_background_color;
 
     int16_t get_text(char* p_text);
+    uint16_t get_value();
+    void set_initial_value(uint16_t value);
     void clear_text();
     void show_num_pad();
     void change_color(uint16_t foreground_color, uint16_t background_color);
