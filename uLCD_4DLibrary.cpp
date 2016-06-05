@@ -12,8 +12,9 @@ uLCD_4DLibrary::uLCD_4DLibrary(PinName tx, PinName rx, PinName reset, uint32_t b
     m_rst.write(1);
     wait_ms(4000);
 	clear_rx_buffer();
-    uart_set_baud_rate(700000);//700000
+    uart_set_baud_rate(7000);//700000
     media_init();
+    //while(file_mount() == 0xFFFE);
     file_mount();
 }
 
@@ -1630,6 +1631,146 @@ uint16_t uLCD_4DLibrary::file_mount()
 	}
 	else
 		return 0xFFFF; // error
+}
+
+uint16_t uLCD_4DLibrary::file_Unmount()
+{
+    uint8_t cmd[2];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x02;
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+		return 0;
+	else
+		return 0xFFFF; // error
+}
+
+uint16_t uLCD_4DLibrary::file_PlayWAV(const char* str)
+{
+    uint16_t size = strlen((const char*)str);
+	uint8_t cmd[3];
+	cmd[0] = 0x00;
+	cmd[1] = 0x0B;
+	cmd[2] = 0x00;
+
+	write_commande(cmd, 2);
+	write_commande((uint8_t*)str, size);
+	write_commande(&(cmd[2]), 1);
+	read_commande(cmd, 3);
+
+	if(cmd[0] == 0x06)
+		return((cmd[1]<<8) | cmd[2]); // return error status
+	else
+		return 0xFFFF;
+}
+
+/* sound */
+uint8_t uLCD_4DLibrary::snd_Volume(float per_cent)
+{
+    uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x00;
+
+	uint16_t volume = (uint16_t)(per_cent*127.);
+	cmd[2] = (uint8_t)(volume >> 4);
+	cmd[3] = (uint8_t)(volume & 0xFF);
+
+	write_commande(cmd, 4);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+        return (cmd[0] == 0x06);
+	else
+		return 0xFF; // error
+}
+
+uint16_t uLCD_4DLibrary::snd_Pitch(uint16_t pitch)
+{
+    uint8_t cmd[4];
+	cmd[0] = 0xFE;
+	cmd[1] = 0xFF;
+	cmd[2] = (uint8_t)(pitch >> 4);
+	cmd[3] = (uint8_t)(pitch & 0xFF);
+
+	write_commande(cmd, 4);
+	read_commande(cmd, 3);
+	if(cmd[0] != 0x06)
+        return ((cmd[1]<<8) | cmd[2]);
+	else
+		return 0x0000; // error
+}
+
+uint8_t uLCD_4DLibrary::snd_BufSize(uint8_t bufsize)
+{
+    uint8_t cmd[4];
+	cmd[0] = 0xFF;
+	cmd[1] = 0x00;
+	cmd[2] = 0x00;
+	cmd[3] = bufsize;
+
+	write_commande(cmd, 4);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+        return 0;
+	else
+		return 0xFF; // error
+}
+
+uint8_t uLCD_4DLibrary::snd_Stop()
+{
+    uint8_t cmd[2];
+	cmd[0] = 0xFE;
+	cmd[1] = 0xFD;
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+        return 0;
+	else
+		return 0xFF; // error
+}
+
+uint8_t uLCD_4DLibrary::snd_Pause()
+{
+    uint8_t cmd[2];
+	cmd[0] = 0xFE;
+	cmd[1] = 0xFC;
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+        return 0;
+	else
+		return 0xFF; // error
+}
+
+uint8_t uLCD_4DLibrary::snd_Continue()
+{
+    uint8_t cmd[2];
+	cmd[0] = 0xFE;
+	cmd[1] = 0xFB;
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 1);
+	if(cmd[0] == 0x06)
+        return 0;
+	else
+		return 0xFF; // error
+}
+
+uint16_t uLCD_4DLibrary::snd_Playing()
+{
+    uint8_t cmd[3];
+	cmd[0] = 0xFE;
+	cmd[1] = 0xFA;
+
+	write_commande(cmd, 2);
+	read_commande(cmd, 3);
+	if(cmd[0] == 0x06)
+        return ((cmd[1]<<8) | cmd[2]);
+	else
+		return 0xFF; // error
 }
 
 /* touch screen function*/

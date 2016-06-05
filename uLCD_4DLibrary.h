@@ -336,6 +336,25 @@ public :
 
     uint16_t file_mount();
 
+    uint16_t file_Unmount();
+
+    uint16_t file_PlayWAV(const char* str);
+
+    /* sound */
+    uint8_t snd_Volume(float per_cent);
+
+    uint16_t snd_Pitch(uint16_t pitch); //must be between 4000 and 65535
+
+    uint8_t snd_BufSize(uint8_t bufsize);
+
+    uint8_t snd_Stop();
+
+    uint8_t snd_Pause();
+
+    uint8_t snd_Continue();
+
+    uint16_t snd_Playing();
+
     /* touch screen function*/
     uint8_t touch_detect_region(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 
